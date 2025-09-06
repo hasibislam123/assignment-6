@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- tailwindcss and daisyui CMD -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@5"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <!-- font-awesome cdn link  -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <title>Green Earth</title>
+  </head>
+  <body class="w-full">
+    <!-- header section -->
+    <header
+      class="flex justify-between items-center h-[61px] w-full bg-[#15803d] px-4 md:px-[100px] text-center"
+    >
+      <h1 class="text-[#ffffff] text-xl md:text-3xl">Green Earth</h1>
+
+      <div class="hidden md:flex gap-4 text-[#ffffff]">
+        <h2>About</h2>
+        <h2>Gallery</h2>
+        <h2>Plant a Tree</h2>
+      </div>
+
+      <button
+        class="hidden md:block btn btn-warning text-[#15803d] rounded-3xl bg-[#facc15] px-4 py-2"
+      >
+        Plant a Tree
+      </button>
+
+      <!-- mobile menu button -->
+      <button id="menu-btn" class="md:hidden text-white text-2xl">☰</button>
+    </header>
+
+    <!-- mobile menu -->
+    <div
+      id="menu"
+      class="hidden flex-col gap-2 px-4 py-2 text-white bg-[#15803d] md:hidden"
+    >
+      <h2>About</h2>
+      <h2>Gallery</h2>
+      <h2>Plant a Tree</h2>
+      <button
+        class="btn btn-warning text-[#15803d] rounded-3xl bg-[#facc15] px-4 py-2"
+      >
+        Plant a Tree
+      </button>
+    </div>
+
+    <!-- banner section -->
+    <section
+      class="flex flex-col md:flex-row items-center justify-between bg-[#cff0dc] md: gap-6"
+    >
+      <img
+        class="w-full md:w-[300px] lg:w-[400px]"
+        src="assets/hero-leaf1.png"
+        alt=""
+      />
+
+      <div
+        class="w-full md:w-[600px] flex flex-col items-center text-center tracking-normal gap-2"
+      >
+        <h1 class="text-lg md:text-[25px] font-extrabold">
+          Plant a Tree, Grow a Future
+        </h1>
+        <p class="md:text-xs lg:text-base">
+          Join our mission to plant 1 million trees and make the Earth greener
+          for future generations.
+        </p>
+        <button
+          class="btn btn-warning text-[#15803d] rounded-3xl bg-[#facc15] w-[136px] mt-2"
+        >
+          Get Involved
+        </button>
+      </div>
+
+      <img class="md:w-full lg:w-[400px]" src="assets/hero-leaf2.png" alt="" />
+    </section>
+
+    <script src="index.js"></script>
+  </body>
+</html>
