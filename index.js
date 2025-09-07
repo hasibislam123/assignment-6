@@ -1,115 +1,199 @@
-const categoryList = document.getElementById("category-list");
-const plantList = document.getElementById("plant-list");
+const CategoriyContainer = document.getElementById("Categoriy-Container");
+const cardsection = document.getElementById("card-section");
 const cartList = document.getElementById("cart-list");
-const cartTotal = document.getElementById("cart-total");
-const spinner = document.getElementById("spinner");
-const modal = document.getElementById("modal");
+const cartSection = document.getElementById("cart-section");
+const modalContainer = document.getElementById("modalContainer");
+const newsDetailsModal = document.getElementById("news-details-modal");
 
+// ---------- Global Cart ----------
 let cart = [];
 
-// Spinner functions
-function showSpinner() { spinner.classList.remove("hidden"); }
-function hideSpinner() { spinner.classList.add("hidden"); }
+// ---------- Load Categories ----------
+const loadCategoriy = () => {
+  fetch("https://openapi.programming-hero.com/api/categories")
+    .then((res) => res.json())
+    .then((data) => {
+      const categoris = data.categories;
+      showCategory(categoris);
+    })
+    .catch((err) => console.log(err));
+};
 
-// Load Categories
-async function loadCategories() {
-  showSpinner();
-  const res = await fetch("https://openapi.programming-hero.com/api/categories");
-  const data = await res.json();
-  hideSpinner();
-
-  data.categories.forEach(cat => {
-    const btn = document.createElement("button");
-    btn.className = "w-full p-2 bg-green-200 rounded hover:bg-green-300";
-    btn.innerText = cat.category;
-    btn.onclick = () => loadPlantsByCategory(cat.id, btn);
-    categoryList.appendChild(btn);
+const showCategory = (categoris) => {
+  CategoriyContainer.innerHTML = `<h1 class="mb-3 font-semibold text-[20px]">Categories</h1>`;
+  categoris.forEach((cat) => {
+    CategoriyContainer.innerHTML += `
+      <li id="${cat.id}" class="hover:bg-[#15803d] cursor-pointer px-2 py-1 rounded">
+        ${cat.category_name}
+      </li>`;
   });
-}
 
-// Load Plants by Category
-async function loadPlantsByCategory(id, btn) {
-  showSpinner();
-  document.querySelectorAll("#category-list button").forEach(b => {
-    b.classList.remove("bg-green-500", "text-white");
+  CategoriyContainer.addEventListener("click", (e) => {
+    const allLi = document.querySelectorAll("#Categoriy-Container li");
+    allLi.forEach((li) => li.classList.remove("bg-[#15803d]", "text-white"));
+
+    if (e.target.localName === "li") {
+      e.target.classList.add("bg-[#15803d]", "text-white");
+      localEarthCategory(e.target.id);
+    }
   });
-  btn.classList.add("bg-green-500", "text-white");
+};
 
-  const res = await fetch(`https://openapi.programming-hero.com/api/category/${id}`);
-  const data = await res.json();
-  hideSpinner();
-  displayPlants(data.data);
-}
+// ---------- Load Plants by Category ----------
+const localEarthCategory = (categoryID) => {
+  showSpinner();
+  fetch(`https://openapi.programming-hero.com/api/category/${categoryID}`)
+    .then((res) => res.json())
+    .then((data) => {
+      hideSpinner();
+      showCardSection(data.plants);
+    })
+    .catch((err) => console.log(err));
+};
 
-// Display Plants as cards
-function displayPlants(plants) {
-  plantList.innerHTML = "";
-  plants.forEach(plant => {
+// ---------- Show Plant Cards ----------
+const showCardSection = (plants) => {
+  cardsection.innerHTML = "";
+
+  plants.forEach((plant) => {
     const card = document.createElement("div");
-    card.className = "bg-white p-4 rounded shadow flex flex-col items-center text-center";
+    card.className =
+      "bg-green-100 border p-2 rounded shadow mb-4 w-[243.33px] flex flex-col justify-between";
 
     card.innerHTML = `
-      <img src="${plant.image}" class="h-32 w-full object-cover rounded mb-2" />
-      <h3 class="text-lg font-bold cursor-pointer text-green-700 hover:underline">${plant.name}</h3>
-      <p class="text-sm mb-1">${plant.description.slice(0,60)}...</p>
-      <p class="text-green-600 font-semibold">Category: ${plant.category}</p>
-      <p class="text-yellow-600 font-bold mb-2">Price: $${plant.price}</p>
-      <button class="px-4 py-2 bg-yellow-400 text-green-700 rounded-full font-semibold hover:bg-yellow-500 transition">Add to Cart</button>
+      <div>
+        <img src="${plant.image}" alt="${plant.plant_name}" class="w-full h-40 object-cover rounded"/>
+      </div>
+      <div class="p-2 flex-1">
+        <h1 class="font-semibold text-[20px] mb-[2px] cursor-pointer text-green-700 hover:underline tree-name">
+          ${plant.name}
+        </h1>
+        <p class="text-sm text-gray-700 mb-[2px]">${plant.description}</p>
+        <div class="flex justify-between items-center mt-2">
+          <button class="btn btn-sm bg-[#DCFCE7] rounded-3xl">${plant.category}</button>
+          <h3 class="font-semibold">
+            <i class="fa-solid fa-bangladeshi-taka-sign"></i>${plant.price}
+          </h3>
+        </div>
+      </div>
+      <button class="btn btn-success w-full mt-2 add-to-cart">Add to Cart</button>
     `;
 
-    card.querySelector("h3").onclick = () => showModal(plant.id);
-    card.querySelector("button").onclick = () => addToCart(plant);
+    // Add to Cart Event
+    card.querySelector(".add-to-cart").addEventListener("click", () => {
+      addToCart(plant);
+    });
 
-    plantList.appendChild(card);
+    // ---------- Modal Event (Tree Name Click) ----------
+    card.querySelector(".tree-name").addEventListener("click", () => {
+      showPlantDetails(plant);
+    });
+
+    cardsection.appendChild(card);
   });
-}
+};
 
-// Modal
-async function showModal(id) {
-  showSpinner();
-  const res = await fetch(`https://openapi.programming-hero.com/api/plant/${id}`);
-  const data = await res.json();
-  hideSpinner();
+// ---------- Show Plant Details in Modal ----------
+const showPlantDetails = (plant) => {
+  modalContainer.innerHTML = `
+    <img src="${plant.image}" alt="${plant.name}" class="w-full h-52 object-cover rounded mb-4"/>
+    <h2 class="text-xl font-bold mb-2">${plant.name}</h2>
+    <p class="text-gray-700 mb-2">${plant.description}</p>
+    <p><strong>Category:</strong> ${plant.category}</p>
+    <p><strong>Price:</strong> ${plant.price} ৳</p>
+  `;
+  newsDetailsModal.showModal();
+};
 
-  const plant = data.data;
-  document.getElementById("modal-title").innerText = plant.name;
-  document.getElementById("modal-img").src = plant.image;
-  document.getElementById("modal-desc").innerText = plant.description;
-  document.getElementById("modal-price").innerText = `Price: $${plant.price}`;
-  modal.classList.remove("hidden");
-}
-
-document.getElementById("close-modal").onclick = () => modal.classList.add("hidden");
-
-// Cart
-function addToCart(plant) {
+// ---------- Add to Cart ----------
+const addToCart = (plant) => {
   cart.push(plant);
-  updateCart();
-}
+  updateCartUI();
+};
 
-function removeFromCart(index) {
-  cart.splice(index,1);
-  updateCart();
-}
+// ---------- Remove From Cart ----------
+const removeFromCart = (index) => {
+  cart.splice(index, 1);
+  updateCartUI();
+};
 
-function updateCart() {
+// ---------- Update Cart UI ----------
+const updateCartUI = () => {
   cartList.innerHTML = "";
   let total = 0;
-  cart.forEach((item,index) => {
+
+  cart.forEach((item, index) => {
     total += item.price;
+
     const li = document.createElement("li");
-    li.className = "flex justify-between items-center bg-white p-2 rounded";
-    li.innerHTML = `${item.name} - $${item.price} <button class="text-red-500">❌</button>`;
-    li.querySelector("button").onclick = () => removeFromCart(index);
+    li.className = "flex justify-between items-center";
+
+    li.innerHTML = `
+      <span>${item.name} - ${item.price}৳</span>
+      <button class="text-red-500 font-bold">❌</button>
+    `;
+
+    li.querySelector("button").addEventListener("click", () => {
+      removeFromCart(index);
+    });
+
     cartList.appendChild(li);
   });
-  cartTotal.innerText = total.toFixed(2);
-}
 
-// Mobile menu toggle
-const menuBtn = document.getElementById("menu-btn");
-const menu = document.getElementById("menu");
-menuBtn.onclick = () => menu.classList.toggle("hidden");
+  // Show total price
+  let totalDiv = document.getElementById("cart-total");
+  if (!totalDiv) {
+    totalDiv = document.createElement("div");
+    totalDiv.id = "cart-total";
+    totalDiv.className = "font-bold mt-2";
+    cartSection.appendChild(totalDiv);
+  }
+  totalDiv.textContent = `Total: ${total} ৳`;
+};
 
-// Initial Load
-loadCategories();
+// ---------- Loading Spinner ----------
+const showSpinner = () => {
+  cardsection.innerHTML = `<div class="col-span-3 text-center py-10">
+      <span class="loading loading-spinner loading-lg text-green-600"></span>
+    </div>`;
+};
+const hideSpinner = () => {
+  cardsection.innerHTML = "";
+};
+// loadAllPlants
+
+const loadAllPlants = () => {
+  showSpinner();
+  fetch("https://openapi.programming-hero.com/api/plants")
+    .then((res) => res.json())
+    .then((data) => {
+      hideSpinner();
+      // if (data.status && data.data.length > 0) {
+      //   showCardSection(data.data); 
+      // } else {
+      //   cardsection.innerHTML = "<p>No plants found!</p>";
+      // }
+      showCardSection(data);
+      console.log(data)
+    })
+    .catch((err) => console.log(err));
+
+};
+// ---------- Load All Plants on Page Load ----------
+window.addEventListener("DOMContentLoaded", () => {
+  showSpinner();
+  fetch("https://openapi.programming-hero.com/api/plants")
+    .then((res) => res.json())
+    .then((data) => {
+      hideSpinner();
+      // if (data.status && data.data.length > 0) {
+      //   showCardSection(data.data); // ✅ ডিফল্ট সব গাছ দেখাবে
+      // }
+      showCardSection(data);
+      console.log(data)
+    })
+    .catch((err) => console.log(err));
+});
+
+loadCategoriy();
+loadAllPlants()

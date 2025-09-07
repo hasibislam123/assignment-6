@@ -22,7 +22,7 @@
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
     <title>Green Earth</title>
   </head>
-  <body class="w-full">
+   <body class="w-full">
     <!-- header section -->
     <header
       class="flex justify-between items-center h-[61px] w-full bg-[#15803d] px-4 md:px-[100px] text-center"
@@ -89,7 +89,43 @@
 
       <img class="md:w-full lg:w-[400px]" src="assets/hero-leaf2.png" alt="" />
     </section>
+    <section class="w-full p-[30px] bg-[#DCFCE790] grid">
+      <h1
+        class="justify-center items-center text-center font-semibold text-[32px] gap-x-5"
+      >
+        Choose Your Trees
+      </h1>
+
+      <main id="main-container" class="grid grid-cols-[1fr_5fr_1fr] gap-2">
+        <!-- option bar -->
+        <div id="" class="grid grid-col-1">
+          <ul id="Categoriy-Container" class="w-[160px] h-[435px]">
+            <h1 class="mb-3 font-semibold text-[20px]">Categories</h1>
+          </ul>
+        </div>
+        <!-- card bar -->
+        <div id="card-section" class="grid grid-cols-3 r-[500px]"></div>
+        <!-- cart bar -->
+        <div id="cart-section" class="bg-white p-4 rounded shadow">
+          <h2 class="font-semibold text-lg mb-2">🛒 Cart List</h2>
+          <ul id="cart-list" class="list-disc pl-5 space-y-1"></ul>
+          <hr class="my-2" />
+          <h3 class="font-semibold">Total: <span id="cart-total">0</span> ৳</h3>
+        </div>
+      </main>
+    </section>
+
+    <dialog id="news-details-modal" class="modal">
+      <div class="modal-box">
+        <div id="modalContainer"></div>
+        <div class="modal-action">
+          <form method="dialog">
+            <!-- if there is a button in form, it will close the modal -->
+            <button class="btn">Close</button>
+          </form>
+        </div>
+      </div>
+    </dialog>
 
     <script src="index.js"></script>
-  </body>
 </html>
