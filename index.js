@@ -173,7 +173,7 @@ const loadAllPlants = () => {
       // } else {
       //   cardsection.innerHTML = "<p>No plants found!</p>";
       // }
-      showCardSection(data);
+      showCardSection(data.plants);
       console.log(data)
     })
     .catch((err) => console.log(err));
@@ -187,9 +187,9 @@ window.addEventListener("DOMContentLoaded", () => {
     .then((data) => {
       hideSpinner();
       // if (data.status && data.data.length > 0) {
-      //   showCardSection(data.data); // ✅ ডিফল্ট সব গাছ দেখাবে
+      //   showCardSection(data.data);
       // }
-      showCardSection(data);
+      showCardSection(data.plants);
       console.log(data)
     })
     .catch((err) => console.log(err));
@@ -197,3 +197,6 @@ window.addEventListener("DOMContentLoaded", () => {
 
 loadCategoriy();
 loadAllPlants()
+
+
+console.log ("don't do this ")
