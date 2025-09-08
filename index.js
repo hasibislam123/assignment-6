@@ -58,7 +58,7 @@ const showCardSection = (plants) => {
   plants.forEach((plant) => {
     const card = document.createElement("div");
     card.className =
-      "bg-green-100 border p-2 rounded shadow mb-4 w-[243.33px] flex flex-col justify-between";
+      "bg-white border p-2 rounded-[8px] w-[270px] shadow mb-4 w-[243.33px] flex flex-col justify-between";
 
     card.innerHTML = `
       <div>
@@ -84,7 +84,7 @@ const showCardSection = (plants) => {
       addToCart(plant);
     });
 
-    // ---------- Modal Event (Tree Name Click) ----------
+    // Modal Event (Tree Name Click) 
     card.querySelector(".tree-name").addEventListener("click", () => {
       showPlantDetails(plant);
     });
@@ -93,31 +93,31 @@ const showCardSection = (plants) => {
   });
 };
 
-// ---------- Show Plant Details in Modal ----------
+// Show Plant Details in Modal 
 const showPlantDetails = (plant) => {
   modalContainer.innerHTML = `
-    <img src="${plant.image}" alt="${plant.name}" class="w-full h-52 object-cover rounded mb-4"/>
-    <h2 class="text-xl font-bold mb-2">${plant.name}</h2>
-    <p class="text-gray-700 mb-2">${plant.description}</p>
-    <p><strong>Category:</strong> ${plant.category}</p>
-    <p><strong>Price:</strong> ${plant.price} ৳</p>
+  <img src="${plant.image}" alt="${plant.name}" class="w-full h-52 object-cover rounded mb-4"/>
+  <h2 class="text-xl font-bold mb-2 bg-white">${plant.name}</h2>
+  <p class="text-gray-700 mb-2">${plant.description}</p>
+  <p><strong>Category:</strong> ${plant.category}</p>
+  <p><strong>Price:</strong> ${plant.price} ৳</p>
   `;
   newsDetailsModal.showModal();
 };
 
-// ---------- Add to Cart ----------
+//  Add to Cart 
 const addToCart = (plant) => {
   cart.push(plant);
   updateCartUI();
 };
 
-// ---------- Remove From Cart ----------
+//  Remove From Cart 
 const removeFromCart = (index) => {
   cart.splice(index, 1);
   updateCartUI();
 };
 
-// ---------- Update Cart UI ----------
+//  Update Cart UI 
 const updateCartUI = () => {
   cartList.innerHTML = "";
   let total = 0;
@@ -151,7 +151,7 @@ const updateCartUI = () => {
   totalDiv.textContent = `Total: ${total} ৳`;
 };
 
-// ---------- Loading Spinner ----------
+//  Loading Spinner 
 const showSpinner = () => {
   cardsection.innerHTML = `<div class="col-span-3 text-center py-10">
       <span class="loading loading-spinner loading-lg text-green-600"></span>
@@ -179,7 +179,7 @@ const loadAllPlants = () => {
     .catch((err) => console.log(err));
 
 };
-// ---------- Load All Plants on Page Load ----------
+//  Load All Plants on Page Load 
 window.addEventListener("DOMContentLoaded", () => {
   showSpinner();
   fetch("https://openapi.programming-hero.com/api/plants")
