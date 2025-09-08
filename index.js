@@ -58,7 +58,7 @@ const showCardSection = (plants) => {
   plants.forEach((plant) => {
     const card = document.createElement("div");
     card.className =
-      "bg-white border p-2 rounded-[8px] w-[270px] shadow mb-4 w-[243.33px] flex flex-col justify-between";
+      "bg-white  p-2 rounded-[8px] w-[330px] shadow mb-4 w-[243.33px] flex flex-col justify-between";
 
     card.innerHTML = `
       <div >
