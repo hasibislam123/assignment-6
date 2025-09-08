@@ -61,7 +61,7 @@ const showCardSection = (plants) => {
       "bg-white border p-2 rounded-[8px] w-[270px] shadow mb-4 w-[243.33px] flex flex-col justify-between";
 
     card.innerHTML = `
-      <div>
+      <div >
         <img src="${plant.image}" alt="${plant.plant_name}" class="w-full h-40 object-cover rounded"/>
       </div>
       <div class="p-2 flex-1">
